@@ -14,6 +14,7 @@ function rjs(opts) {
   this.opts = opts;
 
   this._optimize = function _optimize(){
+    this._s = es.pause();
     var self = this;
     optimize(this.opts, function(text) {
       self._s.write(new File({
@@ -25,6 +26,7 @@ function rjs(opts) {
 
   this.setOption = function setOption(options) {
     this.opts = _.extend(this.opts, options);
+    return this;
   };
 
   this.getOption = function setOption(options) {
@@ -49,7 +51,6 @@ function rjs(opts) {
   }
 
   // create the stream and save the file name (opts.out will be replaced by a callback function later)
-  this._s = es.pause();
   this._fName = this.opts.out;
 
 
