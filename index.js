@@ -13,6 +13,25 @@ function rjs(opts) {
 
   this.opts = opts;
 
+  this._optimize = function _optimize(){
+    var self = this;
+    optimize(this.opts, function(text) {
+      self._s.write(new File({
+        path: self._fName,
+        contents: new Buffer(text)
+      }));
+    });
+  };
+
+  this.setOption = function setOption(options) {
+    _.extend(this.opts, options);
+    this._optimize();
+  };
+
+  this.getStream = function getStream(){
+    return this._s;
+  };
+
   if (!this.opts) {
     throw new PluginError(PLUGIN_NAME, 'Missing options array!');
   }
@@ -29,20 +48,6 @@ function rjs(opts) {
   this._s = es.pause();
   this._fName = this.opts.out;
 
-  this._optimize = function _optimize(){
-    var self = this;
-    optimize(this.opts, function(text) {
-      self._s.write(new File({
-        path: self._fName,
-        contents: new Buffer(text)
-      }));
-    });
-  };
-
-  this.setOption = function setOption(options) {
-    _.extend(this.opts, options);
-    this._optimize();
-  };
 
   // just a small wrapper around the r.js optimizer, we write a new gutil.File (vinyl) to the Stream, mocking a file, which can be handled
   // regular gulp plugins (i hope...).
@@ -61,7 +66,8 @@ function rjs(opts) {
 
 
   // return the stream for chain .pipe()ing
-  return _s;
+  // return _s;
+  return this;
 }
 
 // a small wrapper around the r.js optimizer
