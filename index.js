@@ -24,11 +24,15 @@ function rjs(opts) {
   };
 
   this.setOption = function setOption(options) {
-    _.extend(this.opts, options);
-    this._optimize();
+    this.opts = _.extend(this.opts, options);
+  };
+
+  this.getOption = function setOption(options) {
+    return this.opts;
   };
 
   this.getStream = function getStream(){
+    this._optimize();
     return this._s;
   };
 
@@ -51,7 +55,6 @@ function rjs(opts) {
 
   // just a small wrapper around the r.js optimizer, we write a new gutil.File (vinyl) to the Stream, mocking a file, which can be handled
   // regular gulp plugins (i hope...).
-  this._optimize();
   // try {
   // optimize(opts, function(text) {
   //   _s.write(new File({
