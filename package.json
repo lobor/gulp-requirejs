@@ -11,7 +11,8 @@
   "dependencies": {
     "gulp-util": "~2.2.5",
     "requirejs": "2.1.8",
-    "event-stream": "~3.0.20"
+    "event-stream": "~3.0.20",
+    "underscore": "1.8.3"
   },
   "devDependencies": {
     "mocha": "*",
